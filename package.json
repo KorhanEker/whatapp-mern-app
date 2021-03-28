@@ -1,0 +1,20 @@
+{
+  "name": "whatsapp-backend",
+  "version": "1.0.0",
+  "description": "whatsapp clone app backend functionality",
+  "main": "server.js",
+  "scripts": {
+    "heroku-postbuild": "cd whatsapp_client && npm install && npm run build",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "Korhan Eker",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.2",
+    "pusher": "^5.0.0"
+  }
+}

@@ -1,0 +1,18 @@
+.app {
+  /*  We are going to make the app half and half. Half side bar, half the chat component */
+  display: grid;
+  place-items: center;
+  /* everything inside this app will be centered. This is done horizontally and vertically. 
+  But in order to see vertical placement, you need to define the height.
+  */
+  height: 100vh;
+  background-color: #dadbd3;
+}
+
+.app__body {
+  display: flex;
+  background-color: #ededed;
+  height: 90vh;
+  width: 95vw;
+  box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.75);
+}
