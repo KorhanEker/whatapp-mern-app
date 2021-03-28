@@ -73,6 +73,10 @@ db.once("open", () => {
 });
 
 //  api routes
+app.use(express.static(path.join(__dirname, "whatsapp-client", "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "whatsapp-client", "build", "index.html"));
+});
 
 app.get("/messages/sync", async (req, res) => {
   await Messages.find((err, data) => {
@@ -93,11 +97,6 @@ app.post("/messages/new", async (req, res) => {
       res.status(201).send(`new message created : \n ${data}`);
     }
   });
-});
-
-app.use(express.static(path.join(__dirname, "whatsapp-client", "build")));
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "whatsapp-client", "build", "index.html"));
 });
 
 app.use(middlewares.notFound);
