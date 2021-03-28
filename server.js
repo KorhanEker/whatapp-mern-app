@@ -96,7 +96,7 @@ app.post("/messages/new", async (req, res) => {
 });
 
 app.use(express.static(path.join(__dirname, "whatsapp-client", "build")));
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "whatsapp-client", "build", "index.html"));
 });
 
