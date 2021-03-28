@@ -5,6 +5,7 @@ const Messages = require("./dbMessages");
 const Pusher = require("pusher");
 const cors = require("cors");
 require("dotenv").config();
+const path = require("path");
 
 // app config
 const app = express();
@@ -18,11 +19,32 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
+var allowedOrigins = [
+  `http://localhost:${port}`,
+  "https://korhan-whatsapp-clone.herokuapp.com/",
+];
+
 // middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, fallback) => {
+      // allow requests with no origin
+      // (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
 
-/* We cna get rid of the below code after importing corse and using it above.
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not " +
+          "allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
+/* We can get rid of the below code after importing corse and using it above.
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
@@ -90,10 +112,11 @@ app.post("/messages/new", async (req, res) => {
   });
 });
 
+// serve static assets if in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "whatsapp-client", "build")));
-  app.get("*", (req, resp) => {
-    resp.sendFile(
+  app.get("*", (req, res) => {
+    res.sendFile(
       path.join(__dirname, "whatsapp-client", "build", "index.html")
     );
   });

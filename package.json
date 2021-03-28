@@ -4,9 +4,12 @@
   "description": "whatsapp clone app backend functionality",
   "main": "server.js",
   "scripts": {
-    "heroku-postbuild": "cd whatsapp_client && npm install && npm run build",
+    "client-install": "npm install --prefix whatsapp-client",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "server": "nodemon server.js",
+    "client": "npm start --prefix whatsapp-client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false  npm install --prefix whatsapp-client && npm run build --prefix whatsapp-client"
   },
   "author": "Korhan Eker",
   "license": "ISC",
