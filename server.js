@@ -21,14 +21,6 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
-/* We can get rid of the below code after importing corse and using it above.
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  next();
-});
-*/
-
 // DB Config
 const connection_url = process.env.CONNECTION_URL;
 mongoose.connect(connection_url, {
@@ -101,4 +93,6 @@ app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
 // listener
-app.listen(port, () => console.log(`Listening on http://localhost:${port}`));
+app.listen(port, process.env.CORS_ORIGIN, () =>
+  console.log(`Listening on ${port}`)
+);
