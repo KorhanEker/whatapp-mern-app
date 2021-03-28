@@ -5,7 +5,6 @@ const Messages = require("./dbMessages");
 const Pusher = require("pusher");
 const cors = require("cors");
 const morgan = require("morgan");
-const helmet = require("helmet");
 require("dotenv").config();
 const path = require("path");
 const middlewares = require("./middlewares");
@@ -41,7 +40,6 @@ mongoose.connect(connection_url, {
 // middlewares
 
 app.use(morgan("common"));
-app.use(helmet());
 app.use(express.json());
 app.use(
   cors({
