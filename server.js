@@ -68,7 +68,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "whatsapp-client", "build", "index.html"));
 });
 
-app.get("/messages/sync", async (req, res) => {
+app.get("api/messages/sync", async (req, res) => {
   await Messages.find((err, data) => {
     if (err) {
       res.status(500), send(err);
@@ -78,7 +78,7 @@ app.get("/messages/sync", async (req, res) => {
   });
 });
 
-app.post("/messages/new", async (req, res) => {
+app.post("api/messages/new", async (req, res) => {
   const dbMessage = req.body;
   await Messages.create(dbMessage, (err, data) => {
     if (err) {
