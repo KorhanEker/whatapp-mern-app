@@ -4,8 +4,11 @@ const mongoose = require("mongoose");
 const Messages = require("./dbMessages");
 const Pusher = require("pusher");
 const cors = require("cors");
+const morgan = require("morgan");
+const helmet = require("helmet");
 require("dotenv").config();
 const path = require("path");
+const middlewares = require("./middlewares");
 
 // app config
 const app = express();
@@ -19,12 +22,30 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
+/* We can get rid of the below code after importing corse and using it above.
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  next();
+});
+*/
+
+// DB Config
+const connection_url = process.env.CONNECTION_URL;
+mongoose.connect(connection_url, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+// middlewares
 var allowedOrigins = [
   `http://localhost:${port}`,
   "https://korhan-whatsapp-clone.herokuapp.com/",
 ];
 
-// middlewares
+app.use(morgan("common"));
+app.use(helmet());
 app.use(express.json());
 app.use(
   cors({
@@ -43,22 +64,6 @@ app.use(
     },
   })
 );
-
-/* We can get rid of the below code after importing corse and using it above.
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  next();
-});
-*/
-
-// DB Config
-const connection_url = process.env.CONNECTION_URL;
-mongoose.connect(connection_url, {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 //  Pusher Use
 const db = mongoose.connection;
 db.once("open", () => {
@@ -121,6 +126,9 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
+
+app.use(middlewares.notFound);
+app.use(middlewares.errorHandler);
 
 // listener
 app.listen(port, () => console.log(`Listening on http://localhost:${port}`));
