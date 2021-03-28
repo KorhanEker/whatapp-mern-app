@@ -73,12 +73,6 @@ db.once("open", () => {
 });
 
 //  api routes
-app.get("/", (req, res) => {
-  res.status(200);
-  res.json({
-    message: "Hello World",
-  });
-});
 
 app.get("/messages/sync", async (req, res) => {
   await Messages.find((err, data) => {
@@ -101,15 +95,10 @@ app.post("/messages/new", async (req, res) => {
   });
 });
 
-// serve static assets if in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "whatsapp-client", "build")));
-  app.get("*", (req, res) => {
-    res.sendFile(
-      path.join(__dirname, "whatsapp-client", "build", "index.html")
-    );
-  });
-}
+app.use(express.static(path.join(__dirname, "whatsapp-client", "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "whatsapp-client", "build", "index.html"));
+});
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
