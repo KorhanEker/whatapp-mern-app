@@ -10,6 +10,7 @@ function App() {
 
   useEffect(() => {
     axios.get("/messages/sync").then((response) => {
+      console.log(response.data);
       setMessages(response.data);
     });
   }, []);
