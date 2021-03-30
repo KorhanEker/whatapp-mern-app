@@ -22,7 +22,9 @@ const pusher = new Pusher({
 });
 
 // DB Config
-const connection_url = process.env.REACT_APP_CONNECTION_URLL;
+const connection_url = process.env.REACT_APP_CONNECTION_URL;
+alert(connection_url);
+console.log(connection_url);
 mongoose.connect(connection_url, {
   useCreateIndex: true,
   useNewUrlParser: true,
@@ -34,13 +36,7 @@ mongoose.connect(connection_url, {
 app.use(morgan("common"));
 app.use(express.json());
 app.use(cors());
-/*
-app.use(
-  cors({
-    origin: process.env.REACT_APP_CORS_ORIGIN,
-  })
-);
-*/
+
 //  Pusher Use
 const db = mongoose.connection;
 db.once("open", () => {
@@ -76,7 +72,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.get("api/messages/sync", async (req, res) => {
+app.get("/messages/sync", async (req, res) => {
   await Messages.find((err, data) => {
     if (err) {
       res.status(500), send(err);
@@ -86,7 +82,7 @@ app.get("api/messages/sync", async (req, res) => {
   });
 });
 
-app.post("api/messages/new", async (req, res) => {
+app.post("/messages/new", async (req, res) => {
   const dbMessage = req.body;
   await Messages.create(dbMessage, (err, data) => {
     if (err) {
@@ -101,6 +97,4 @@ app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
 // listener
-app.listen(port, process.env.CORS_ORIGIN, () =>
-  console.log(`Listening on ${port}`)
-);
+app.listen(port, () => console.log(`Listening on ${port}`));
