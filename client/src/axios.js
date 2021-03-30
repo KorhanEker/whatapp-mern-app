@@ -3,7 +3,7 @@ require("dotenv").config();
 // @ts-check
 const API_URL =
   process.env.NODE_ENV === "production"
-    ? "https://korhan-whatsapp-clone.herokuapp.com/api"
+    ? "https://korhan-whatsapp-clone.herokuapp.com/"
     : "http://localhost:9000/";
 // @ts-check
 const instance = axios.create({
