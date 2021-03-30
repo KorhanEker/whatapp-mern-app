@@ -22,7 +22,7 @@ const pusher = new Pusher({
 });
 
 // DB Config
-const connection_url = process.env.CONNECTION_URL;
+const connection_url = process.env.REACT_APP_CONNECTION_URLL;
 mongoose.connect(connection_url, {
   useCreateIndex: true,
   useNewUrlParser: true,
@@ -37,7 +37,7 @@ app.use(cors());
 /*
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.REACT_APP_CORS_ORIGIN,
   })
 );
 */
