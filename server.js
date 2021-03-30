@@ -23,8 +23,6 @@ const pusher = new Pusher({
 
 // DB Config
 const connection_url = process.env.REACT_APP_CONNECTION_URL;
-alert(connection_url);
-console.log(connection_url);
 mongoose.connect(connection_url, {
   useCreateIndex: true,
   useNewUrlParser: true,
