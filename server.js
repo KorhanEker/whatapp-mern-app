@@ -33,11 +33,14 @@ mongoose.connect(connection_url, {
 
 app.use(morgan("common"));
 app.use(express.json());
+app.use(cors());
+/*
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
   })
 );
+*/
 //  Pusher Use
 const db = mongoose.connection;
 db.once("open", () => {
@@ -63,10 +66,15 @@ db.once("open", () => {
 });
 
 //  api routes
-app.use(express.static(path.join(__dirname, "whatsapp-client", "build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "whatsapp-client", "build", "index.html"));
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client", "build")));
+  app.get("/ping", (req, res) => {
+    res.send("pong");
+  });
+  app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.get("api/messages/sync", async (req, res) => {
   await Messages.find((err, data) => {
